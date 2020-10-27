@@ -7,7 +7,7 @@ import "user_message.proto";
 
 
 message Plant {
-    int32 id = 1;
+    string id = 1;
     string name = 2;
     Category category = 3;  
     
@@ -22,4 +22,8 @@ message Plant {
     User user = 6;
     google.protobuf.Timestamp last_updated = 7;
 
+  }
+
+  message PlantID{
+    string value = 1;
   }

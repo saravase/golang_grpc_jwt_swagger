@@ -2,6 +2,13 @@ syntax = "proto3";
 
 package pb;
 
-service PlantService{
+import "google/protobuf/empty.proto";
+import "plant_message.proto";
 
+service PlantService{
+    rpc GetPlants(google.protobuf.Empty) returns(stream Plant);
+    rpc GetPlant(PlantID) returns(Plant);
+    rpc CreatePlant(stream Plant) returns(PlantID);
+    rpc UpdatePlant(stream Plant) returns(PlantID);
+    rpc DeletePlant(stream PlantID) returns(PlantID);
 }
