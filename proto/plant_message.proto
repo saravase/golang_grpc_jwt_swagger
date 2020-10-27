@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/timestamp.proto";
+import "user_message.proto";
+
+
+message Plant {
+    int32 id = 1;
+    string name = 2;
+    Category category = 3;  
+    
+    enum Category {
+        TREE = 0;
+        FLOWER = 1;
+        FRUIT = 2;
+    }
+    
+    float price = 4;
+    string description = 5;
+    User user = 6;
+    google.protobuf.Timestamp last_updated = 7;
+
+  }
