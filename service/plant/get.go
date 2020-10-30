@@ -9,29 +9,25 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *Server) GetPlants(in *emptypb.Empty, stream pb.PlantService_GetPlantsServer) error {
+func (server *PlantServer) GetPlants(in *emptypb.Empty, stream pb.PlantService_GetPlantsServer) error {
 
-	if len(s.plantMap) == 0 {
-		s.logger.Printf("No plant records")
-		return status.Error(codes.NotFound, "No plant records")
+	plantMap, err := server.store.FindAll()
+	if err != nil {
+		return err
 	}
 
-	for id, plant := range s.plantMap {
-		s.logger.Printf(" Sent plant record id : %s", id)
+	for _, plant := range plantMap {
 		stream.Send(plant)
 	}
 	return status.New(codes.OK, "").Err()
 }
 
-func (s *Server) GetPlant(ctx context.Context, in *pb.PlantID) (plant *pb.Plant, err error) {
+func (server *PlantServer) GetPlant(ctx context.Context, in *pb.PlantID) (plant *pb.Plant, err error) {
 
-	for id, plant := range s.plantMap {
-		s.logger.Printf(" Sent plant record id : %s", id)
-		if id == in.Value {
-			s.logger.Printf(" Matching plant record id : %s ", id)
-			return plant, status.New(codes.OK, "").Err()
-		}
+	plantData, err := server.store.Find(in)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, status.Errorf(codes.NotFound, "Plant record id %s not found", in.Value)
+	return plantData, status.New(codes.OK, "").Err()
 }

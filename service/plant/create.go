@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreatePlant(stream pb.PlantService_CreatePlantServer) error {
+func (server *PlantServer) CreatePlant(stream pb.PlantService_CreatePlantServer) error {
 
 	var plants []string
 
@@ -22,8 +22,7 @@ func (s *Server) CreatePlant(stream pb.PlantService_CreatePlantServer) error {
 			return status.New(codes.OK, "").Err()
 		}
 
-		s.logger.Printf("Created plant id : %s", plant.Id)
-		s.plantMap[plant.Id] = plant
+		server.store.Save(plant)
 		plants = append(plants, plant.Id)
 	}
 

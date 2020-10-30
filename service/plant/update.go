@@ -9,30 +9,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) UpdatePlant(stream pb.PlantService_UpdatePlantServer) error {
-	var plants []string
+func (server *PlantServer) UpdatePlant(stream pb.PlantService_UpdatePlantServer) error {
 
+	var plants []string
 	for {
-		plant, err := stream.Recv()
-		if err == io.EOF {
+		plant, serr := stream.Recv()
+		if serr == io.EOF {
 			stream.SendAndClose(&pb.PlantID{
 				Value: "Updated plants : " + strings.Join(plants, ", "),
 			})
 			return status.New(codes.OK, "").Err()
 		}
 
-		found := true
-		for id, _ := range s.plantMap {
-			if id == plant.Id {
-				s.logger.Printf("Updated plant id : %s", id)
-				s.plantMap[id] = plant
-				plants = append(plants, id)
-				found = false
-				break
-			}
+		id, err := server.store.Update(plant)
+		if err != nil {
+			return err
 		}
-		if found {
-			return status.Errorf(codes.NotFound, "Plant record id %s not found", plant.Id)
-		}
+		plants = append(plants, id)
 	}
 }

@@ -9,30 +9,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) DeletePlant(stream pb.PlantService_DeletePlantServer) error {
-	var plants []string
+func (server *PlantServer) DeletePlant(stream pb.PlantService_DeletePlantServer) error {
 
+	var plants []string
 	for {
-		plantId, err := stream.Recv()
-		if err == io.EOF {
+		plantId, serr := stream.Recv()
+		if serr == io.EOF {
 			stream.SendAndClose(&pb.PlantID{
 				Value: "Deleted plants : " + strings.Join(plants, ", "),
 			})
 			return status.New(codes.OK, "").Err()
 		}
 
-		found := true
-		for id, _ := range s.plantMap {
-			if id == plantId.Value {
-				delete(s.plantMap, id)
-				plants = append(plants, id)
-				found = false
-				break
-			}
+		id, err := server.store.Delete(plantId)
+		if err != nil {
+			return err
 		}
-
-		if found {
-			return status.Errorf(codes.NotFound, "Plant record id %s not found", plantId.Value)
-		}
+		plants = append(plants, id)
 	}
 }

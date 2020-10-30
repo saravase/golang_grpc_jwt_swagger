@@ -24,7 +24,8 @@ func main() {
 	}
 
 	s := grpc.NewServer()
-	ss := plant.NewServer(logger)
+	store := plant.NewInMemoryPlantStore()
+	ss := plant.NewPlantServer(logger, store)
 	pb.RegisterPlantServiceServer(s, ss)
 
 	log.Printf("gRPC server listening on port %s", port)

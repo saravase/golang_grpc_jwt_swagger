@@ -3,6 +3,6 @@ gen:
 clean:
 	rm pb/*.go
 ps:
-	go run server/main.go
+	go run grpc/server/main.go
 pc:
-	go run client/main.go
+	go run grpc/client/main.go
