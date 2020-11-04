@@ -6,6 +6,7 @@ import (
 	"github.com/saravase/golang_grpc_jwt_swagger/pb"
 )
 
+// DeletePlant used to call DeletePlant gRPC service method
 func (client *PlantClient) DeletePlant() {
 	dplants := []*pb.PlantID{
 		&pb.PlantID{
@@ -24,6 +25,7 @@ func (client *PlantClient) DeletePlant() {
 	}
 
 	for _, plantId := range dplants {
+		// Send stream of plant id
 		if err := ds.Send(plantId); err != nil {
 			log.Fatalf("%v.Send(%v) = %v",
 				ds, plantId, err)

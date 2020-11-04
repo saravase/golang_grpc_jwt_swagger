@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// UpdatePlant used to implement client streaming
+// To update the plant data into the datastore based on id.
 func (server *PlantServer) UpdatePlant(stream pb.PlantService_UpdatePlantServer) error {
 
 	var plants []string

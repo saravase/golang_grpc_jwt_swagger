@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// CreatePlant used to implement client streaming
+// To insert the new plant data into the datastore
 func (server *PlantServer) CreatePlant(stream pb.PlantService_CreatePlantServer) error {
 
 	var plants []string

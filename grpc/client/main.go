@@ -26,11 +26,11 @@ func main() {
 
 	pclient := plant.NewPlantClient(conn, ctx)
 	pclient.CreatePlant()
-	pclient.GetAllPlant()
+	pclient.GetPlants()
 	pclient.UpdatePlant()
-	pclient.GetAllPlant()
+	pclient.GetPlants()
 	pclient.DeletePlant()
-	pclient.GetAllPlant()
+	pclient.GetPlants()
 	pclient.GetPlant()
 
 }

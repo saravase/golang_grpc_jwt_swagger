@@ -6,6 +6,7 @@ import (
 	"github.com/saravase/golang_grpc_jwt_swagger/pb"
 )
 
+// CreatePlant used to call CreatePlant gRPC service method
 func (client *PlantClient) CreatePlant() {
 	plants := []*pb.Plant{
 		&pb.Plant{
@@ -53,6 +54,7 @@ func (client *PlantClient) CreatePlant() {
 	}
 
 	for _, plant := range plants {
+		// Send stream of plant
 		if err := cs.Send(plant); err != nil {
 			log.Fatalf("%v.Send(%v) = %v",
 				cs, plant.Id, err)

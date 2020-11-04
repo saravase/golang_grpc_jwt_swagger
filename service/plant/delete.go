@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// DeletePlant used to implement client streaming
+// To delete the plant data into the datastore based on stream of id.
 func (server *PlantServer) DeletePlant(stream pb.PlantService_DeletePlantServer) error {
 
 	var plants []string

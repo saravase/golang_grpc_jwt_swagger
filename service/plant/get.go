@@ -9,6 +9,8 @@ import (
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
+// GetPlants is used to implement server streaming
+// To fetch all the plants data from the datastore
 func (server *PlantServer) GetPlants(in *emptypb.Empty, stream pb.PlantService_GetPlantsServer) error {
 
 	plantMap, err := server.store.FindAll()
@@ -22,6 +24,8 @@ func (server *PlantServer) GetPlants(in *emptypb.Empty, stream pb.PlantService_G
 	return status.New(codes.OK, "").Err()
 }
 
+// GetPlant is used to implement unary stream
+// To fetch the plant data based on plant id from the datastore
 func (server *PlantServer) GetPlant(ctx context.Context, in *pb.PlantID) (plant *pb.Plant, err error) {
 
 	plantData, err := server.store.Find(in)

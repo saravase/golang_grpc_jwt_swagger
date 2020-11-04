@@ -27,6 +27,7 @@ func NewInMemoryPlantStore() *InMemoryPlantStore {
 	}
 }
 
+// FindAll function get all the plants data from the plantstore
 func (store *InMemoryPlantStore) FindAll() (map[string]*pb.Plant, error) {
 	store.mutex.Lock()
 	defer store.mutex.Unlock()
@@ -36,6 +37,7 @@ func (store *InMemoryPlantStore) FindAll() (map[string]*pb.Plant, error) {
 	return store.plantMap, nil
 }
 
+// Find function get the plant data based on plant id into the plantstore
 func (store *InMemoryPlantStore) Find(plantId *pb.PlantID) (*pb.Plant, error) {
 	store.mutex.Lock()
 	defer store.mutex.Unlock()
@@ -46,12 +48,14 @@ func (store *InMemoryPlantStore) Find(plantId *pb.PlantID) (*pb.Plant, error) {
 	return nil, status.Errorf(codes.NotFound, "Plant record id %s not found", id)
 }
 
+// Save function insert new plant data into the plantstore
 func (store *InMemoryPlantStore) Save(plant *pb.Plant) {
 	store.mutex.Lock()
 	defer store.mutex.Unlock()
 	store.plantMap[plant.Id] = plant
 }
 
+// Update function update the plant data based on plant id into the plantstore
 func (store *InMemoryPlantStore) Update(plant *pb.Plant) (string, error) {
 	store.mutex.Lock()
 	defer store.mutex.Unlock()
@@ -63,6 +67,7 @@ func (store *InMemoryPlantStore) Update(plant *pb.Plant) (string, error) {
 	return "", status.Errorf(codes.NotFound, "Plant record id %s not found", id)
 }
 
+// Delete function delete the plant data based on plant id into the plantstore
 func (store *InMemoryPlantStore) Delete(plantId *pb.PlantID) (string, error) {
 	store.mutex.Lock()
 	defer store.mutex.Unlock()

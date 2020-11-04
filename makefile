@@ -1,8 +1,10 @@
+.PHONY: gen clean server client
+
 gen:
 	protoc --proto_path=proto/ proto/*.proto --go_out=plugins=grpc:pb
 clean:
 	rm pb/*.go
-ps:
+server:
 	go run grpc/server/main.go
-pc:
+client:
 	go run grpc/client/main.go
